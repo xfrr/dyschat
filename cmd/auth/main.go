@@ -11,9 +11,9 @@ import (
 )
 
 var (
-	grpcPort = env.Get("DYCHAT_AUTH_GRPC_PORT", "50051")
-	secret   = env.Get("DYCHAT_AUTH_JWT_SECRET", "secret")
-	logLevel = env.Get("DYCHAT_AUTH_LOG_LEVEL", "debug")
+	grpcPort = env.Get("DYSCHAT_AUTH_GRPC_PORT", "50051")
+	secret   = env.Get("DYSCHAT_AUTH_JWT_SECRET", "secret")
+	logLevel = env.Get("DYSCHAT_AUTH_LOG_LEVEL", "debug")
 )
 
 func main() {

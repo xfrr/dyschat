@@ -32,10 +32,10 @@ import (
 var (
 	svcName = "ws-agent"
 
-	natsURL = env.Get("DYCHAT_NATS_URL", "nats://0.0.0.0:4222")
+	natsURL = env.Get("DYSCHAT_NATS_URL", "nats://0.0.0.0:4222")
 
-	wsPort   = env.Get("DYCHAT_WS_AGENT_PORT", "8083")
-	logLevel = env.Get("DYCHAT_WS_AGENT_LOG_LEVEL", "debug")
+	wsPort   = env.Get("DYSCHAT_WS_AGENT_PORT", "8083")
+	logLevel = env.Get("DYSCHAT_WS_AGENT_LOG_LEVEL", "debug")
 )
 
 func main() {

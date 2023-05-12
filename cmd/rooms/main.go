@@ -29,14 +29,14 @@ import (
 
 var (
 	// common
-	authGRPCAddr = env.Get("DYCHAT_AUTH_GRPC_ADDR", "localhost:50051")
-	natsURL      = env.Get("DYCHAT_NATS_URL", "nats://localhost:4222")
-	redisAddr    = env.Get("DYCHAT_REDIS_ADDR", "localhost:6379")
+	authGRPCAddr = env.Get("DYSCHAT_AUTH_GRPC_ADDR", "localhost:50051")
+	natsURL      = env.Get("DYSCHAT_NATS_URL", "nats://localhost:4222")
+	redisAddr    = env.Get("DYSCHAT_REDIS_ADDR", "localhost:6379")
 
 	// rooms
-	grpcPort = env.Get("DYCHAT_ROOMS_GRPC_PORT", "50052")
-	httpPort = env.Get("DYCHAT_ROOMS_HTTP_PORT", "51052")
-	logLevel = env.Get("DYCHAT_ROOMS_LOG_LEVEL", "debug")
+	grpcPort = env.Get("DYSCHAT_ROOMS_GRPC_PORT", "50052")
+	httpPort = env.Get("DYSCHAT_ROOMS_HTTP_PORT", "51052")
+	logLevel = env.Get("DYSCHAT_ROOMS_LOG_LEVEL", "debug")
 )
 
 func main() {

@@ -41,15 +41,15 @@ var (
 	svcName = "messages-writer"
 
 	// common
-	jaegerURL = env.Get("DYCHAT_JAEGER_URL", "http://jaeger:14268/api/traces")
-	natsURL   = env.Get("DYCHAT_NATS_URL", "nats://0.0.0.0:4222")
-	redisAddr = env.Get("DYCHAT_REDIS_ADDR", "redis:6379")
-	redisPass = env.Get("DYCHAT_REDIS_PASS", "")
-	redisDB   = env.Get("DYCHAT_REDIS_DATABASE", "0")
+	jaegerURL = env.Get("DYSCHAT_JAEGER_URL", "http://jaeger:14268/api/traces")
+	natsURL   = env.Get("DYSCHAT_NATS_URL", "nats://0.0.0.0:4222")
+	redisAddr = env.Get("DYSCHAT_REDIS_ADDR", "redis:6379")
+	redisPass = env.Get("DYSCHAT_REDIS_PASS", "")
+	redisDB   = env.Get("DYSCHAT_REDIS_DATABASE", "0")
 
 	// messages-writer
-	envMode  = env.Get("DYCHAT_MSG_WRITER_ENV_MODE", "development")
-	logLevel = env.Get("DYCHAT_MSG_WRITER_LOG_LEVEL", "debug")
+	envMode  = env.Get("DYSCHAT_MSG_WRITER_ENV_MODE", "development")
+	logLevel = env.Get("DYSCHAT_MSG_WRITER_LOG_LEVEL", "debug")
 )
 
 func main() {
