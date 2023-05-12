@@ -1,0 +1,155 @@
+version: '3.9'
+
+volumes:
+  grafana_storage:
+  prometheus_data:
+
+services:
+  auth:
+    build:
+      context: ../
+      dockerfile: ./docker/dev.go.Dockerfile
+      args:
+        - SVC_NAME=auth
+    restart: on-failure
+    volumes:
+      - ../:/randchat
+    ports:
+      - ${DYCHAT_AUTH_GRPC_PORT}:${DYCHAT_AUTH_GRPC_PORT}
+    environment:
+      - DYCHAT_AUTH_JWT_SECRET=${DYCHAT_AUTH_JWT_SECRET}
+      - DYCHAT_AUTH_GRPC_PORT=${DYCHAT_AUTH_GRPC_PORT}
+      - DYCHAT_AUTH_LOG_LEVEL=${DYCHAT_AUTH_LOG_LEVEL}
+
+  rooms:
+    build:
+      context: ../
+      dockerfile: ./docker/dev.go.Dockerfile
+      args:
+        - SVC_NAME=rooms
+    restart: on-failure
+    volumes:
+      - ../:/randchat
+    ports:
+      - ${DYCHAT_ROOMS_GRPC_PORT}:${DYCHAT_ROOMS_GRPC_PORT}
+    environment:
+      - DYCHAT_REDIS_ADDR=${DYCHAT_REDIS_ADDR}
+      - DYCHAT_REDIS_PASS=${DYCHAT_REDIS_PASS}
+      - DYCHAT_NATS_URL=${DYCHAT_NATS_URL}
+      - DYCHAT_JAEGER_URL=${DYCHAT_JAEGER_URL}
+      - DYCHAT_AUTH_GRPC_ADDR=auth:${DYCHAT_AUTH_GRPC_PORT}
+      - DYCHAT_ROOMS_GRPC_PORT=${DYCHAT_ROOMS_GRPC_PORT}
+      - DYCHAT_ROOMS_LOG_LEVEL=${DYCHAT_ROOMS_LOG_LEVEL}
+
+  messages-writer: 
+    build:
+      context: ../
+      dockerfile: ./docker/dev.go.Dockerfile
+      args:
+        - SVC_NAME=messages-writer
+    restart: on-failure
+    volumes:
+      - ../:/randchat
+    environment:
+      - DYCHAT_NATS_URL=${DYCHAT_NATS_URL}
+      - DYCHAT_JAEGER_URL=${DYCHAT_JAEGER_URL}
+      - DYCHAT_REDIS_ADDR=${DYCHAT_REDIS_ADDR}
+      - DYCHAT_REDIS_PASS=${DYCHAT_REDIS_PASS}
+      - DYCHAT_REDIS_DATABASE=${DYCHAT_REDIS_DATABASE}
+      - DYCHAT_MSG_WRITER_LOG_LEVEL=${DYCHAT_MSG_WRITER_LOG_LEVEL}
+
+  ws-agent:
+    build:
+      context: ../
+      dockerfile: ./docker/dev.go.Dockerfile
+      args:
+        - SVC_NAME=ws-agent
+    restart: on-failure
+    ports:
+      - ${DYCHAT_WS_AGENT_PORT}:${DYCHAT_WS_AGENT_PORT}
+    volumes:
+      - ../:/randchat
+    environment:
+      - DYCHAT_NATS_URL=${DYCHAT_NATS_URL}
+      - DYCHAT_JAEGER_URL=${DYCHAT_JAEGER_URL}
+      - DYCHAT_WS_AGENT_PORT=${DYCHAT_WS_AGENT_PORT}
+      - DYCHAT_WS_AGENT_LOG_LEVEL=${DYCHAT_WS_AGENT_LOG_LEVEL}
+
+  # INFRA ----------------------------------------------------------
+  nats:
+    image: nats:alpine
+    restart: always
+    command: ["-c", "/etc/nats/nats.conf"]
+    volumes:
+      - ./nats/nats.conf:/etc/nats/nats.conf
+    ports:
+      - 4222:4222
+      - 8222:8222
+    env_file:
+      - ./.dev.env
+
+  redis:
+    image: redis:alpine
+    restart: always
+    ports:
+      - 6379:6379
+    env_file:
+      - ./.dev.env
+
+  grafana:
+    image: grafana/grafana:latest
+    volumes:
+      - grafana_storage:/var/lib/grafana
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+    ports:
+      - 3000:3000
+    env_file:
+      - ./.dev.env
+
+  prometheus:
+    image: prom/prometheus:v2.18.1
+    restart: on-failure
+    command: --config.file=/etc/prometheus/prometheus.yml
+    volumes:
+      - ./prometheus/config.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    ports:
+      - 9090:9090
+    env_file:
+      - ./.dev.env
+
+  prom_nats_exporter:
+    image: natsio/prometheus-nats-exporter:latest
+    command: -connz -subz -varz http://nats:8222
+    restart: unless-stopped
+    ports:
+      - 7777:7777
+
+  node_exporter:
+    image: prom/node-exporter:latest
+    container_name: monitoring_node_exporter
+    restart: unless-stopped
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor-arm64:v0.47.1
+    hostname: cadvisor
+    container_name: cadvisor
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    volumes:
+    - /:/rootfs:ro
+    - /var/run/docker.sock:/var/run/docker.sock:rw
+    - /sys:/sys:ro
+    - /var/lib/docker/:/var/lib/docker:ro
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.42.0
+    restart: on-failure
+    environment:
+      - LOG_LEVEL=debug
+    ports:
+      - 16686:16686

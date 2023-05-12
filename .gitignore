@@ -1,0 +1,15 @@
+*.out
+*.bin
+*.o
+*.obj
+*.exe
+*.report
+*.csv
+*.log
+
+coverage
+bin
+build
+vendor
+out
+tests

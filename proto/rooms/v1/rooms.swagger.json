@@ -1,0 +1,535 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Rooms Service",
+    "version": "1.0.0"
+  },
+  "tags": [
+    {
+      "name": "RoomsService"
+    }
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/rooms": {
+      "get": {
+        "operationId": "RoomsService_GetRooms",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/roomsRooms"
+            }
+          },
+          "400": {
+            "description": "Malformed request payload.",
+            "schema": {}
+          },
+          "401": {
+            "description": "Invalid or missing authorization header.",
+            "schema": {}
+          },
+          "403": {
+            "description": "User does not have access to this resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Resource not found.",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "orderBy",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "RoomsService"
+        ],
+        "security": [
+          {
+            "UserKey": []
+          }
+        ]
+      },
+      "post": {
+        "operationId": "RoomsService_CreateRoom",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/roomsID"
+            }
+          },
+          "400": {
+            "description": "Malformed request payload.",
+            "schema": {}
+          },
+          "401": {
+            "description": "Invalid or missing authorization header.",
+            "schema": {}
+          },
+          "403": {
+            "description": "User does not have access to this resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Resource not found.",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/roomsCreateRoomRequest"
+            }
+          }
+        ],
+        "tags": [
+          "RoomsService"
+        ],
+        "security": [
+          {
+            "UserKey": []
+          }
+        ]
+      }
+    },
+    "/rooms/{roomId}": {
+      "get": {
+        "operationId": "RoomsService_GetRoom",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/roomsRoom"
+            }
+          },
+          "400": {
+            "description": "Malformed request payload.",
+            "schema": {}
+          },
+          "401": {
+            "description": "Invalid or missing authorization header.",
+            "schema": {}
+          },
+          "403": {
+            "description": "User does not have access to this resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Resource not found.",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "roomId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "RoomsService"
+        ],
+        "security": [
+          {
+            "UserKey": []
+          }
+        ]
+      }
+    },
+    "/rooms/{roomId}/members/{memberId}": {
+      "delete": {
+        "operationId": "RoomsService_LeaveMember",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/roomsEmpty"
+            }
+          },
+          "400": {
+            "description": "Malformed request payload.",
+            "schema": {}
+          },
+          "401": {
+            "description": "Invalid or missing authorization header.",
+            "schema": {}
+          },
+          "403": {
+            "description": "User does not have access to this resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Resource not found.",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "roomId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "memberId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "RoomsService"
+        ],
+        "security": [
+          {
+            "UserKey": []
+          }
+        ]
+      },
+      "post": {
+        "operationId": "RoomsService_JoinMember",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/roomsEmpty"
+            }
+          },
+          "400": {
+            "description": "Malformed request payload.",
+            "schema": {}
+          },
+          "401": {
+            "description": "Invalid or missing authorization header.",
+            "schema": {}
+          },
+          "403": {
+            "description": "User does not have access to this resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Resource not found.",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "roomId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "memberId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "secretKey": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "RoomsService"
+        ],
+        "security": [
+          {
+            "UserKey": []
+          }
+        ]
+      }
+    },
+    "/rooms/{roomId}/messages": {
+      "get": {
+        "operationId": "RoomsService_GetRoomMessages",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/roomsMessages"
+            }
+          },
+          "400": {
+            "description": "Malformed request payload.",
+            "schema": {}
+          },
+          "401": {
+            "description": "Invalid or missing authorization header.",
+            "schema": {}
+          },
+          "403": {
+            "description": "User does not have access to this resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Resource not found.",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "roomId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "startTimestamp",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "endTimestamp",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "RoomsService"
+        ],
+        "security": [
+          {
+            "UserKey": []
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "roomsCreateRoomRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "secretKey": {
+          "type": "string"
+        },
+        "maxMembers": {
+          "type": "string",
+          "format": "int64"
+        },
+        "maxMessages": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "roomsEmpty": {
+      "type": "object"
+    },
+    "roomsID": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "secretKey": {
+          "type": "string"
+        }
+      }
+    },
+    "roomsMember": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/roomsMemberStatus"
+        }
+      }
+    },
+    "roomsMemberStatus": {
+      "type": "string",
+      "enum": [
+        "UNKNOWN",
+        "ONLINE",
+        "OFFLINE"
+      ],
+      "default": "UNKNOWN"
+    },
+    "roomsMessage": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "roomId": {
+          "type": "string"
+        },
+        "memberId": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "roomsMessages": {
+      "type": "object",
+      "properties": {
+        "messages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/roomsMessage"
+          }
+        }
+      }
+    },
+    "roomsRoom": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "secretKey": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/roomsRoomStatus"
+        },
+        "members": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/roomsMember"
+          }
+        }
+      }
+    },
+    "roomsRoomStatus": {
+      "type": "string",
+      "enum": [
+        "CREATED",
+        "MATCHING",
+        "MATCHED",
+        "CANCELLED"
+      ],
+      "default": "CREATED"
+    },
+    "roomsRooms": {
+      "type": "object",
+      "properties": {
+        "rooms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/roomsRoom"
+          }
+        }
+      }
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "UserKey": {
+      "type": "apiKey",
+      "name": "authorization",
+      "in": "header"
+    }
+  }
+}

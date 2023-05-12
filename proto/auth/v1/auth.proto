@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package auth;
+
+option go_package = "github.com/xfmrr/randchat/proto/auth";
+
+service AuthService {
+  rpc Identify(IdentifyRequest) returns (Identity) {}
+  rpc Issue(IssueRequest) returns (Key) {}
+}
+
+message IdentifyRequest {
+  string token = 1;
+}
+
+message Identity {
+  string session_id = 1;
+}
+
+message IssueRequest {
+  string session_id = 1;
+  int64  TTL        = 2;
+}
+
+message Key {
+  string token = 1;
+}
+
